@@ -22,7 +22,7 @@ function scrollToFeatures() {
 
 function showDemoMessage() {
   closeLogin();
-  alert('Bsdk bana to pahele.');
+  alert('error occurred.');
 }
 
 modal.addEventListener('click', (event) => {
