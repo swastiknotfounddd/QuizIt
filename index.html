@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuizIt — Learn. Test. Grow.</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <header>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="brand" href="#top" aria-label="QuizIt home">
+          <span class="brand-mark">✓</span>
+          <span>Quiz<span class="brand-accent">It</span></span>
+        </a>
+
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#features">For educators</a>
+        </div>
+
+        <div class="actions">
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            type="button"
+            aria-label="Switch to dark theme"
+            aria-pressed="false"
+            title="Toggle color theme"
+          >
+            <span class="theme-icon" aria-hidden="true">☾</span>
+            <span class="theme-label">Light mode</span>
+          </button>
+          <button class="login" type="button" onclick="openLogin()">Log in</button>
+          <button class="primary" type="button" onclick="openLogin()">Get started</button>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <p class="eyebrow"><span class="spark">✦</span>A smarter way to assess</p>
+          <h1 id="hero-title">Every question is a chance to <em>grow.</em></h1>
+          <p class="hero-description">
+            Create engaging quizzes, measure progress instantly, and make learning feel a little more rewarding for everyone.
+          </p>
+
+          <div class="hero-buttons">
+            <button class="primary" type="button" onclick="openLogin()">Start learning free</button>
+            <button class="text-link" type="button" onclick="scrollToFeatures()">
+              Explore the platform <span>→</span>
+            </button>
+          </div>
+
+          <div class="trusted">
+            <div class="faces" aria-hidden="true">
+              <span class="face">👩🏽</span>
+              <span class="face">👨🏻</span>
+              <span class="face">👩🏾</span>
+              <span class="face">🧑🏻</span>
+            </div>
+            <span>Trusted by 12,000+ curious learners</span>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-label="Quiz preview">
+          <div class="blob"></div>
+          <article class="quiz-card">
+            <div class="card-top">
+              <span class="tag">SCIENCE</span>
+              <span>02:48 remaining</span>
+            </div>
+            <h2>The human body</h2>
+            <p>Question 6 of 10</p>
+            <div class="progress" aria-label="62 percent complete"><i></i></div>
+            <p class="question">Which organ pumps blood around the body?</p>
+            <div class="option active"><b>✓</b>The heart</div>
+            <div class="option">○&nbsp; The lungs</div>
+            <div class="option">○&nbsp; The brain</div>
+          </article>
+          <div class="float-card"><small>YOUR CURRENT STREAK</small><strong>🔥 7 days</strong></div>
+          <div class="sticker" aria-hidden="true">✦</div>
+        </div>
+      </section>
+
+      <section class="stats" aria-label="QuizIt statistics">
+        <div class="stat"><strong>12k+</strong><span>active learners</span></div>
+        <div class="stat"><strong>850+</strong><span>quizzes created</span></div>
+        <div class="stat"><strong>96%</strong><span>completion rate</span></div>
+        <div class="stat"><strong>4.9/5</strong><span>learner satisfaction</span></div>
+      </section>
+
+      <section class="features" id="features" aria-labelledby="features-title">
+        <div class="section-heading" id="how-it-works">
+          <h2 id="features-title">Built for better learning.</h2>
+          <p>Everything students and educators need to turn assessment into a meaningful moment.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="feature-icon">✎</div>
+            <h3>Create with ease</h3>
+            <p>Build thoughtful quizzes in minutes, organise questions, and share them with your class.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">◷</div>
+            <h3>Focus under time</h3>
+            <p>Set timers and keep every attempt on track with a calm, distraction-free quiz space.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">↗</div>
+            <h3>See progress instantly</h3>
+            <p>Automatic scoring and clear results help every learner understand what comes next.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-card">
+        <button class="close" type="button" aria-label="Close login" onclick="closeLogin()">×</button>
+        <h2 id="modal-title">Welcome to QuizIt</h2>
+        <p>Choose how you’d like to continue. This is a UI demonstration only.</p>
+
+        <div class="role">
+          <button class="selected" type="button" onclick="selectRole(this)">🎓&nbsp; I’m a student</button>
+          <button type="button" onclick="selectRole(this)">✦&nbsp; I’m an educator</button>
+        </div>
+
+        <input class="input" type="email" placeholder="Email address" aria-label="Email address" />
+        <input class="input" type="password" placeholder="Password" aria-label="Password" />
+        <button class="primary modal-submit" type="button" onclick="showDemoMessage()">Continue to QuizIt</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
