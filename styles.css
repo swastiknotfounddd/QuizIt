@@ -22,6 +22,37 @@ body {
   font-family: 'DM Sans', sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+.skip-link,
+.sr-only {
+  position: absolute;
+}
+.skip-link {
+  top: -50px;
+  left: 18px;
+  z-index: 10;
+  padding: 10px 14px;
+  color: #fff;
+  background: var(--blue);
+  border-radius: 8px;
+  font-weight: 700;
+}
+.skip-link:focus {
+  top: 14px;
+}
+.sr-only {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 button {
   border: 0;
   cursor: pointer;
@@ -78,6 +109,10 @@ button {
 }
 .nav-links a:hover, .login:hover, .text-link:hover {
   color: var(--blue);
+}
+.nav-links a:focus-visible, .login:focus-visible, .text-link:focus-visible, .close:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 4px;
 }
 .actions {
   gap: 18px;
@@ -263,7 +298,7 @@ button {
   font-size: 12px;
 }
 .option.active {
-  color: var(--navy);
+  color: #edf2ff;
   background: #1d2b4d;
   border-color: var(--blue);
   font-weight: 600;
@@ -341,6 +376,111 @@ button {
 
 .features {
   padding: 82px max(5.6vw, 28px);
+}
+.how-it-works {
+  padding: 82px max(5.6vw, 28px);
+  background: #0d1017;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.how-it-works .section-heading h2 {
+  margin-top: 14px;
+}
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  counter-reset: step;
+}
+.steps li {
+  position: relative;
+  min-height: 168px;
+  padding: 0 30px;
+  border-left: 1px solid var(--line);
+}
+.steps li:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+.steps span {
+  display: inline-block;
+  margin-bottom: 18px;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.steps h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+.steps p {
+  max-width: 250px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.educator-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin: 82px max(5.6vw, 28px);
+  padding: 50px 58px;
+  overflow: hidden;
+  background: linear-gradient(120deg, #1a2c56, #1a4750);
+  border: 1px solid #375071;
+  border-radius: 22px;
+}
+.educator-cta h2 {
+  max-width: 610px;
+  margin: 16px 0 12px;
+  font-family: Fraunces, serif;
+  font-size: clamp(30px, 3.6vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -1.8px;
+}
+.educator-cta > div > p:last-child {
+  max-width: 550px;
+  margin: 0;
+  color: #c0cada;
+  line-height: 1.6;
+}
+.educator-cta .primary {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.educator-cta .primary span {
+  margin-left: 8px;
+  font-size: 18px;
+}
+footer {
+  padding: 31px max(5.6vw, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: #7f8a9c;
+  background: #0d1017;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+}
+footer .brand {
+  font-size: 18px;
+}
+footer .brand-mark {
+  width: 29px;
+  height: 29px;
+  border-radius: 9px;
+  box-shadow: 3px 3px 0 #273b73;
+  font-size: 16px;
+}
+footer p {
+  margin: 0;
 }
 .section-heading {
   display: flex;
@@ -478,6 +618,22 @@ button {
   width: 100%;
   margin-top: 4px;
 }
+.account-switch {
+  margin: 18px 0 0;
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+}
+.account-switch button {
+  padding: 0;
+  color: var(--blue);
+  background: transparent;
+  font-size: inherit;
+  font-weight: 700;
+}
+.account-switch button:hover {
+  text-decoration: underline;
+}
 
 @media (max-width: 760px) {
   .nav {
@@ -506,6 +662,40 @@ button {
 }
 .feature-grid {
   grid-template-columns: 1fr;
+}
+.how-it-works {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+.steps {
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+.steps li, .steps li:first-child {
+  min-height: 0;
+  padding: 0 0 24px 22px;
+  border: 0;
+  border-left: 1px solid var(--line);
+}
+.steps li:last-child {
+  padding-bottom: 0;
+}
+.steps span {
+  margin-bottom: 9px;
+}
+.educator-cta {
+  display: block;
+  margin-top: 60px;
+  margin-bottom: 60px;
+  padding: 35px 28px;
+}
+.educator-cta .primary {
+  margin-top: 25px;
+}
+footer {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 13px;
 }
 .section-heading {
   display: block;

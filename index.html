@@ -15,6 +15,7 @@
   </head>
 
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header>
       <nav class="nav" aria-label="Main navigation">
         <a class="brand" href="#top" aria-label="QuizIt home">
@@ -25,17 +26,17 @@
         <div class="nav-links">
           <a href="#features">Features</a>
           <a href="#how-it-works">How it works</a>
-          <a href="#features">For educators</a>
+          <a href="#educators">For educators</a>
         </div>
 
         <div class="actions">
           <button class="login" type="button" onclick="openLogin()">Log in</button>
-          <button class="primary" type="button" onclick="openLogin()">Get started</button>
+          <button class="primary" type="button" onclick="openLogin('signup')">Create account</button>
         </div>
       </nav>
     </header>
 
-    <main id="top">
+    <main id="main-content">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-content">
           <p class="eyebrow"><span class="spark">✦</span>A smarter way to assess</p>
@@ -45,7 +46,7 @@
           </p>
 
           <div class="hero-buttons">
-            <button class="primary" type="button" onclick="openLogin()">Start learning free</button>
+            <button class="primary" type="button" onclick="openLogin('signup')">Start learning free</button>
             <button class="text-link" type="button" onclick="scrollToFeatures()">
               Explore the platform <span>→</span>
             </button>
@@ -90,7 +91,7 @@
       </section>
 
       <section class="features" id="features" aria-labelledby="features-title">
-        <div class="section-heading" id="how-it-works">
+        <div class="section-heading">
           <h2 id="features-title">Built for better learning.</h2>
           <p>Everything students and educators need to turn assessment into a meaningful moment.</p>
         </div>
@@ -113,22 +114,55 @@
           </article>
         </div>
       </section>
+
+      <section class="how-it-works" id="how-it-works" aria-labelledby="how-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow"><span class="spark">✦</span>Simple from the start</p>
+            <h2 id="how-title">From question to confidence.</h2>
+          </div>
+          <p>QuizIt keeps the process clear, so more time goes into learning and less into admin.</p>
+        </div>
+        <ol class="steps">
+          <li><span>01</span><h3>Build a quiz</h3><p>Add questions, choose a timer, and make it yours.</p></li>
+          <li><span>02</span><h3>Share and learn</h3><p>Invite your class with one simple link.</p></li>
+          <li><span>03</span><h3>Celebrate progress</h3><p>See results right away and know what to practise next.</p></li>
+        </ol>
+      </section>
+
+      <section class="educator-cta" id="educators" aria-labelledby="educators-title">
+        <div>
+          <p class="eyebrow"><span class="spark">✦</span>Made for every classroom</p>
+          <h2 id="educators-title">A calmer way to keep every learner moving.</h2>
+          <p>Bring your quizzes, feedback, and progress snapshots together in one welcoming space.</p>
+        </div>
+        <button class="primary" type="button" onclick="openLogin('signup')">Start creating free <span>→</span></button>
+      </section>
     </main>
+
+    <footer>
+      <a class="brand" href="#top" aria-label="Back to QuizIt home"><span class="brand-mark">✓</span><span>QuizIt</span></a>
+      <p>Learn. Test. Grow.</p>
+      <span>© 2026 QuizIt</span>
+    </footer>
 
     <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div class="modal-card">
         <button class="close" type="button" aria-label="Close login" onclick="closeLogin()">×</button>
-        <h2 id="modal-title">Welcome to QuizIt</h2>
-        <p>Choose how you’d like to continue. This is a UI demonstration only.</p>
+        <h2 id="modal-title">Welcome back</h2>
+        <p id="modal-description">Log in to continue learning with QuizIt.</p>
 
         <div class="role">
           <button class="selected" type="button" onclick="selectRole(this)">🎓&nbsp; I’m a student</button>
           <button type="button" onclick="selectRole(this)">✦&nbsp; I’m an educator</button>
         </div>
 
-        <input class="input" type="email" placeholder="Email address" aria-label="Email address" />
-        <input class="input" type="password" placeholder="Password" aria-label="Password" />
-        <button class="primary modal-submit" type="button" onclick="showDemoMessage()">Continue to QuizIt</button>
+        <label class="sr-only" for="login-email">Email address</label>
+        <input class="input" id="login-email" type="email" placeholder="Email address" />
+        <label class="sr-only" for="login-password">Password</label>
+        <input class="input" id="login-password" type="password" placeholder="Password" />
+        <button class="primary modal-submit" id="modal-submit" type="button" onclick="showDemoMessage()">Log in</button>
+        <p class="account-switch" id="account-switch">New to QuizIt? <button type="button" onclick="openLogin('signup')">Create an account</button></p>
       </div>
     </div>
 
