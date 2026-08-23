@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090b10" />
+    <title>Science quiz — QuizIt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="quiz.css" />
+  </head>
+  <body class="quiz-page">
+    <a class="skip-link" href="#quiz-main">Skip to quiz</a>
+    <header class="quiz-header">
+      <a class="brand" href="index.html" aria-label="QuizIt home">
+        <span class="brand-mark">✓</span><span>QuizIt</span>
+      </a>
+      <div class="timer" aria-live="polite">
+        <span aria-hidden="true">◷</span> <span id="timer">05:00</span>
+      </div>
+    </header>
+
+    <main id="quiz-main" class="quiz-main">
+      <section class="quiz-shell" aria-labelledby="quiz-title">
+        <div class="quiz-meta">
+          <span class="tag">SCIENCE</span>
+          <span id="question-count">Question 1 of 5</span>
+        </div>
+        <div class="progress" aria-label="Quiz progress">
+          <i id="progress-bar"></i>
+        </div>
+
+        <div id="question-panel">
+          <h1 id="quiz-title">The human body</h1>
+          <p class="quiz-question" id="question-text"></p>
+          <div
+            class="answer-list"
+            id="answer-list"
+            role="radiogroup"
+            aria-label="Answer choices"
+          ></div>
+          <p class="answer-feedback" id="answer-feedback" aria-live="polite"></p>
+          <div class="quiz-actions">
+            <button class="text-link" id="previous-button" type="button">← Previous</button>
+            <button class="primary" id="next-button" type="button" disabled>
+              Next question <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <section class="results" id="results" hidden aria-labelledby="results-title">
+          <p class="eyebrow"><span class="spark">✦</span>Quiz complete</p>
+          <h1 id="results-title">Nice work!</h1>
+          <p class="results-summary" id="results-summary"></p>
+          <div class="score-card">
+            <span>Your score</span>
+            <strong id="score">0 / 5</strong>
+          </div>
+          <div class="result-actions">
+            <button class="primary" id="retry-button" type="button">Try again</button>
+            <a class="text-link" href="index.html">Back to home →</a>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="quiz.js"></script>
+  </body>
+</html>

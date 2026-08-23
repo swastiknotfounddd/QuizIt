@@ -30,8 +30,8 @@
         </div>
 
         <div class="actions">
-          <button class="login" type="button" onclick="openLogin()">Log in</button>
-          <button class="primary" type="button" onclick="openLogin('signup')">Create account</button>
+          <button class="login" type="button" data-open-modal="login">Log in</button>
+          <button class="primary" type="button" data-open-modal="signup">Create account</button>
         </div>
       </nav>
     </header>
@@ -46,8 +46,8 @@
           </p>
 
           <div class="hero-buttons">
-            <button class="primary" type="button" onclick="openLogin('signup')">Start learning free</button>
-            <button class="text-link" type="button" onclick="scrollToFeatures()">
+            <a class="primary" href="quiz.html">Try a quiz free</a>
+            <button class="text-link" type="button" data-scroll-to="features">
               Explore the platform <span>→</span>
             </button>
           </div>
@@ -136,7 +136,7 @@
           <h2 id="educators-title">A calmer way to keep every learner moving.</h2>
           <p>Bring your quizzes, feedback, and progress snapshots together in one welcoming space.</p>
         </div>
-        <button class="primary" type="button" onclick="openLogin('signup')">Start creating free <span>→</span></button>
+        <button class="primary" type="button" data-open-modal="signup">Start creating free <span>→</span></button>
       </section>
     </main>
 
@@ -148,21 +148,21 @@
 
     <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div class="modal-card">
-        <button class="close" type="button" aria-label="Close login" onclick="closeLogin()">×</button>
+        <button class="close" type="button" aria-label="Close login">×</button>
         <h2 id="modal-title">Welcome back</h2>
         <p id="modal-description">Log in to continue learning with QuizIt.</p>
 
         <div class="role">
-          <button class="selected" type="button" onclick="selectRole(this)">🎓&nbsp; I’m a student</button>
-          <button type="button" onclick="selectRole(this)">✦&nbsp; I’m an educator</button>
+          <button class="selected" type="button">🎓&nbsp; I’m a student</button>
+          <button type="button">✦&nbsp; I’m an educator</button>
         </div>
 
         <label class="sr-only" for="login-email">Email address</label>
         <input class="input" id="login-email" type="email" placeholder="Email address" />
         <label class="sr-only" for="login-password">Password</label>
         <input class="input" id="login-password" type="password" placeholder="Password" />
-        <button class="primary modal-submit" id="modal-submit" type="button" onclick="showDemoMessage()">Log in</button>
-        <p class="account-switch" id="account-switch">New to QuizIt? <button type="button" onclick="openLogin('signup')">Create an account</button></p>
+        <button class="primary modal-submit" id="modal-submit" type="button">Log in</button>
+        <p class="account-switch" id="account-switch">New to QuizIt? <button type="button">Create an account</button></p>
       </div>
     </div>
 
