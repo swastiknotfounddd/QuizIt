@@ -11,6 +11,7 @@ const builder = document.getElementById('quiz-builder');
 const builderQuestions = document.getElementById('builder-questions');
 const quizForm = document.getElementById('quiz-form');
 const builderMessage = document.getElementById('builder-message');
+let displayName = '';
 
 function addMetric(label, value) {
   const card = document.createElement('article');
@@ -63,7 +64,7 @@ function clearDashboard() { metrics.replaceChildren(); activityList.replaceChild
 async function loadStudentDashboard(user) {
   clearDashboard();
   roleLabel.textContent = 'Student dashboard';
-  title.textContent = 'Keep growing.';
+  title.textContent = displayName ? `Keep growing, ${displayName}.` : 'Keep growing.';
   intro.textContent = 'Your completed quizzes and recent progress are all in one place.';
   activityTitle.textContent = 'Recent activity';
   activityDescription.textContent = 'Your latest completed quizzes.';
@@ -192,7 +193,7 @@ async function saveQuiz(user) {
 async function loadTeacherDashboard(user) {
   clearDashboard();
   roleLabel.textContent = 'Educator dashboard';
-  title.textContent = 'See learning take shape.';
+  title.textContent = displayName ? `See learning take shape, ${displayName}.` : 'See learning take shape.';
   intro.textContent = 'Create quizzes, then track learner progress and spot where they need support.';
   activityTitle.textContent = 'Your quizzes';
   activityDescription.textContent = 'Quiz performance from learner attempts.';
@@ -227,8 +228,9 @@ async function initDashboard() {
   document.getElementById('logout-button').addEventListener('click', async () => { await window.quizitSupabase.auth.signOut(); window.location.replace('index.html'); });
   document.getElementById('add-question').addEventListener('click', addQuestion);
   document.getElementById('close-builder').addEventListener('click', () => { builder.hidden = true; });
-  const { data: profile, error } = await window.quizitSupabase.from('profiles').select('role').eq('id', user.id).single();
+  const { data: profile, error } = await window.quizitSupabase.from('profiles').select('role, full_name').eq('id', user.id).single();
   if (error) throw error;
+  displayName = profile.full_name?.trim().split(/\s+/)[0] || '';
   if (profile.role === 'educator') {
     addQuestion();
     quizForm.addEventListener('submit', (event) => { event.preventDefault(); saveQuiz(user); });

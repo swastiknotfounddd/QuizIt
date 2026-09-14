@@ -18,3 +18,7 @@ Educators can use **Create a quiz** on their dashboard to add a title, category,
 ## Existing accounts
 
 If an account was created before the database trigger in `schema.sql` was installed, run `supabase/004_backfill_profiles.sql` once in Supabase SQL Editor. It creates the missing profile rows and keeps any existing profile unchanged.
+
+## Signup profile fields
+
+New accounts collect a name, age, and optional school/organization. If the database schema was already installed, run `supabase/005_profile_fields.sql` in the SQL Editor before testing a new signup.

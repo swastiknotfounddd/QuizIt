@@ -157,6 +157,15 @@
           <button type="button" data-role="educator">✦&nbsp; I’m an educator</button>
         </div>
 
+        <div id="profile-fields" hidden>
+          <label class="sr-only" for="profile-name">Full name</label>
+          <input class="input" id="profile-name" type="text" placeholder="Your full name" autocomplete="name" maxlength="80" />
+          <label class="sr-only" for="profile-age">Age</label>
+          <input class="input" id="profile-age" type="number" placeholder="Your age" min="5" max="120" inputmode="numeric" />
+          <label class="sr-only" for="profile-school">School or organization</label>
+          <input class="input" id="profile-school" type="text" placeholder="School or organization (optional)" autocomplete="organization" maxlength="120" />
+        </div>
+
         <label class="sr-only" for="login-email">Email address</label>
         <input class="input" id="login-email" type="email" placeholder="Email address" autocomplete="email" required />
         <label class="sr-only" for="login-password">Password</label>

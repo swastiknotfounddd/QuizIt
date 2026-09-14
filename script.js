@@ -6,6 +6,10 @@ const accountSwitch = document.getElementById('account-switch');
 const authMessage = document.getElementById('auth-message');
 const emailInput = document.getElementById('login-email');
 const passwordInput = document.getElementById('login-password');
+const profileFields = document.getElementById('profile-fields');
+const nameInput = document.getElementById('profile-name');
+const ageInput = document.getElementById('profile-age');
+const schoolInput = document.getElementById('profile-school');
 const roleButtons = document.querySelectorAll('.role button');
 const openButtons = document.querySelectorAll('[data-open-modal]');
 const scrollButtons = document.querySelectorAll('[data-scroll-to]');
@@ -32,6 +36,9 @@ function openLogin(mode = 'login') {
   modalDescription.textContent = config.description;
   modalSubmit.textContent = config.submit;
   passwordInput.autocomplete = mode === 'login' ? 'current-password' : 'new-password';
+  profileFields.hidden = mode !== 'signup';
+  nameInput.required = mode === 'signup';
+  ageInput.required = mode === 'signup';
   showMessage('');
   const switchButton = document.createElement('button');
   switchButton.type = 'button';
@@ -61,7 +68,7 @@ function renderAuthActions(user) {
 }
 
 async function submitAuth() {
-  if (!emailInput.reportValidity() || !passwordInput.reportValidity()) return;
+  if (!emailInput.reportValidity() || !passwordInput.reportValidity() || (currentMode === 'signup' && (!nameInput.reportValidity() || !ageInput.reportValidity()))) return;
   if (!window.quizitSupabase) {
     showMessage('Add your Supabase URL and anon key in supabase-config.js first.', true);
     return;
@@ -72,7 +79,18 @@ async function submitAuth() {
   const password = passwordInput.value;
   const result = currentMode === 'login'
     ? await window.quizitSupabase.auth.signInWithPassword({ email, password })
-    : await window.quizitSupabase.auth.signUp({ email, password, options: { data: { role: selectedRole } } });
+    : await window.quizitSupabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          role: selectedRole,
+          full_name: nameInput.value.trim(),
+          age: Number(ageInput.value),
+          school: schoolInput.value.trim() || null,
+        },
+      },
+    });
   modalSubmit.disabled = false;
   if (result.error) return showMessage(result.error.message, true);
   if (currentMode === 'login') {

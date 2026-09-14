@@ -7,6 +7,9 @@ create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text not null,
   role public.user_role not null default 'student',
+  full_name text,
+  age smallint check (age is null or age between 5 and 120),
+  school text,
   created_at timestamptz not null default now()
 );
 
@@ -89,8 +92,15 @@ returns trigger
 language plpgsql security definer set search_path = public
 as $$
 begin
-  insert into public.profiles (id, email, role)
-  values (new.id, new.email, coalesce((new.raw_user_meta_data ->> 'role')::public.user_role, 'student'));
+  insert into public.profiles (id, email, role, full_name, age, school)
+  values (
+    new.id,
+    new.email,
+    case when new.raw_user_meta_data ->> 'role' = 'educator' then 'educator'::public.user_role else 'student'::public.user_role end,
+    nullif(trim(new.raw_user_meta_data ->> 'full_name'), ''),
+    case when new.raw_user_meta_data ->> 'age' ~ '^[0-9]+$' and (new.raw_user_meta_data ->> 'age')::integer between 5 and 120 then (new.raw_user_meta_data ->> 'age')::smallint else null end,
+    nullif(trim(new.raw_user_meta_data ->> 'school'), '')
+  );
   return new;
 end;
 $$;
