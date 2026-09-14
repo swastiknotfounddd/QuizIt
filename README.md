@@ -22,3 +22,5 @@ If an account was created before the database trigger in `schema.sql` was instal
 ## Signup profile fields
 
 New accounts collect a name, age, and optional school/organization. If the database schema was already installed, run `supabase/005_profile_fields.sql` in the SQL Editor before testing a new signup.
+
+When Supabase Email Confirmations are disabled, an existing email is shown as “An account with this email already exists” during signup. With confirmations enabled, Supabase intentionally obscures this response to prevent outsiders from checking which emails are registered; the app instead shows the usual confirmation message.

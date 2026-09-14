@@ -90,9 +90,12 @@ async function submitAuth() {
           school: schoolInput.value.trim() || null,
         },
       },
-    });
+  });
   modalSubmit.disabled = false;
-  if (result.error) return showMessage(result.error.message, true);
+  if (result.error) {
+    const accountExists = currentMode === 'signup' && /already (registered|exists)/i.test(result.error.message);
+    return showMessage(accountExists ? 'An account with this email already exists. Select “Log in” below to continue.' : result.error.message, true);
+  }
   if (currentMode === 'login') {
     const { data: profile, error: profileError } = await window.quizitSupabase
       .from('profiles')
