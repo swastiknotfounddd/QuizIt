@@ -10,3 +10,7 @@ The app now supports email/password signup and login, creates a profile with the
 ## Dashboards
 
 `dashboard.html` shows the dashboard appropriate to the profile role selected during signup. Students see their completed attempts and score summary; educators see quizzes they own and their learner attempt totals. If `schema.sql` was already run before this dashboard was added, also run `supabase/002_teacher_dashboard.sql` in the SQL Editor to allow educators to read attempts for their own quizzes.
+
+## Teacher quiz builder
+
+Educators can use **Create a quiz** on their dashboard to add a title, category, timer, and one or more four-option questions. Published quizzes can be opened from the educator dashboard and shared using their `quiz.html?quiz=...` URL. If the original schema is already installed, run `supabase/003_quiz_builder.sql` in the SQL Editor before using this feature; it grants educators access only to create and manage their own quizzes and questions.

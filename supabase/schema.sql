@@ -51,8 +51,26 @@ alter table public.attempts enable row level security;
 
 create policy "Users can read their own profile" on public.profiles for select using (auth.uid() = id);
 create policy "Anyone can read published quizzes" on public.quizzes for select using (is_published or auth.uid() = created_by);
+create policy "Educators can create quizzes" on public.quizzes for insert with check (
+  auth.uid() = created_by and exists (select 1 from public.profiles where profiles.id = auth.uid() and profiles.role = 'educator')
+);
+create policy "Educators can update their quizzes" on public.quizzes for update using (
+  auth.uid() = created_by and exists (select 1 from public.profiles where profiles.id = auth.uid() and profiles.role = 'educator')
+);
+create policy "Educators can delete their quizzes" on public.quizzes for delete using (
+  auth.uid() = created_by and exists (select 1 from public.profiles where profiles.id = auth.uid() and profiles.role = 'educator')
+);
 create policy "Anyone can read questions for published quizzes" on public.questions for select using (
   exists (select 1 from public.quizzes where quizzes.id = questions.quiz_id and (quizzes.is_published or quizzes.created_by = auth.uid()))
+);
+create policy "Educators can create questions for their quizzes" on public.questions for insert with check (
+  exists (select 1 from public.quizzes join public.profiles on profiles.id = quizzes.created_by where quizzes.id = questions.quiz_id and quizzes.created_by = auth.uid() and profiles.role = 'educator')
+);
+create policy "Educators can update questions for their quizzes" on public.questions for update using (
+  exists (select 1 from public.quizzes join public.profiles on profiles.id = quizzes.created_by where quizzes.id = questions.quiz_id and quizzes.created_by = auth.uid() and profiles.role = 'educator')
+);
+create policy "Educators can delete questions for their quizzes" on public.questions for delete using (
+  exists (select 1 from public.quizzes join public.profiles on profiles.id = quizzes.created_by where quizzes.id = questions.quiz_id and quizzes.created_by = auth.uid() and profiles.role = 'educator')
 );
 create policy "Users can read their attempts" on public.attempts for select using (auth.uid() = user_id);
 create policy "Users can save their attempts" on public.attempts for insert with check (auth.uid() = user_id);

@@ -184,10 +184,11 @@ retryButton.addEventListener('click', startQuiz);
 
 async function loadQuiz() {
   if (!window.quizitSupabase) return startQuiz();
+  const slug = new URLSearchParams(window.location.search).get('quiz') || 'human-body';
   const { data: quiz, error: quizError } = await window.quizitSupabase
     .from('quizzes')
-    .select('id, title, duration_seconds')
-    .eq('slug', 'human-body')
+    .select('id, title, category, duration_seconds')
+    .eq('slug', slug)
     .single();
 
   if (quizError || !quiz) return startQuiz();
@@ -206,6 +207,7 @@ async function loadQuiz() {
     quizId = quiz.id;
     quizDuration = quiz.duration_seconds;
     document.getElementById('quiz-title').textContent = quiz.title;
+    document.querySelector('.quiz-meta .tag').textContent = quiz.category;
   }
   startQuiz();
 }

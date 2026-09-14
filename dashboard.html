@@ -24,8 +24,23 @@
       <p class="dashboard-message" id="dashboard-message" role="status" aria-live="polite"></p>
       <section class="metric-grid" id="metrics" aria-label="Progress summary"></section>
       <section class="dashboard-section" aria-labelledby="activity-title">
-        <div class="section-title"><div><h2 id="activity-title">Recent activity</h2><p id="activity-description">Your latest completed quizzes.</p></div><a class="primary" href="quiz.html" id="dashboard-action">Take a quiz</a></div>
+        <div class="section-title"><div><h2 id="activity-title">Recent activity</h2><p id="activity-description">Your latest completed quizzes.</p></div><button class="primary" id="dashboard-action" type="button">Take a quiz</button></div>
         <div class="activity-list" id="activity-list"></div>
+      </section>
+      <section class="quiz-builder" id="quiz-builder" hidden aria-labelledby="builder-title">
+        <div class="section-title"><div><h2 id="builder-title">Create a quiz</h2><p>Add your questions, then save it as a draft or publish it for learners.</p></div><button class="login" id="close-builder" type="button">Close</button></div>
+        <form id="quiz-form" class="quiz-form">
+          <div class="builder-details">
+            <label>Quiz title<input id="new-quiz-title" class="input" type="text" maxlength="100" placeholder="e.g. World geography" required /></label>
+            <label>Category<input id="new-quiz-category" class="input" type="text" maxlength="50" placeholder="e.g. Geography" required /></label>
+            <label>Time limit (minutes)<input id="new-quiz-duration" class="input" type="number" min="1" max="180" value="5" required /></label>
+          </div>
+          <div class="question-builder-head"><h3>Questions</h3><button class="text-link" id="add-question" type="button">+ Add question</button></div>
+          <div id="builder-questions" class="builder-questions"></div>
+          <label class="publish-toggle"><input id="new-quiz-published" type="checkbox" checked /> Publish for learners now</label>
+          <p class="dashboard-message" id="builder-message" role="status" aria-live="polite"></p>
+          <button class="primary" id="save-quiz" type="submit">Save quiz</button>
+        </form>
       </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
