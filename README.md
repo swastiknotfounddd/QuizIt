@@ -6,3 +6,7 @@
 4. Serve the folder through a local web server (rather than opening the files directly), for example: `python3 -m http.server 8000`.
 
 The app now supports email/password signup and login, creates a profile with the chosen role, fetches the published `human-body` quiz from the database, and saves completed attempts for signed-in users. Row-level security limits profiles and attempts to their owner. Quiz content is publicly readable only when published.
+
+## Dashboards
+
+`dashboard.html` shows the dashboard appropriate to the profile role selected during signup. Students see their completed attempts and score summary; educators see quizzes they own and their learner attempt totals. If `schema.sql` was already run before this dashboard was added, also run `supabase/002_teacher_dashboard.sql` in the SQL Editor to allow educators to read attempts for their own quizzes.

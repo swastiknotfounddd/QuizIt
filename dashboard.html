@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090b10" />
+    <title>Dashboard — QuizIt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body class="dashboard-page">
+    <a class="skip-link" href="#dashboard-main">Skip to dashboard</a>
+    <header class="dashboard-header">
+      <a class="brand" href="index.html" aria-label="QuizIt home"><span class="brand-mark">✓</span><span>QuizIt</span></a>
+      <div class="dashboard-nav"><a href="quiz.html">Take a quiz</a><button class="login" id="logout-button" type="button">Log out</button></div>
+    </header>
+    <main id="dashboard-main" class="dashboard-main">
+      <p class="eyebrow"><span class="spark">✦</span><span id="role-label">Your dashboard</span></p>
+      <h1 id="dashboard-title">Welcome back</h1>
+      <p class="dashboard-intro" id="dashboard-intro">Loading your learning progress…</p>
+      <p class="dashboard-message" id="dashboard-message" role="status" aria-live="polite"></p>
+      <section class="metric-grid" id="metrics" aria-label="Progress summary"></section>
+      <section class="dashboard-section" aria-labelledby="activity-title">
+        <div class="section-title"><div><h2 id="activity-title">Recent activity</h2><p id="activity-description">Your latest completed quizzes.</p></div><a class="primary" href="quiz.html" id="dashboard-action">Take a quiz</a></div>
+        <div class="activity-list" id="activity-list"></div>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="supabase.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
+</html>

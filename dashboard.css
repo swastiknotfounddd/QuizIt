@@ -1,0 +1,23 @@
+.dashboard-page { min-height: 100vh; background: radial-gradient(circle at top right, #183446 0, var(--cream) 45%); }
+.dashboard-header { height: 78px; padding: 0 max(5.6vw, 28px); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); background: #0d1017cc; }
+.dashboard-nav { display: flex; align-items: center; gap: 22px; }
+.dashboard-nav a { color: var(--muted); font-size: 14px; font-weight: 700; text-decoration: none; }
+.dashboard-main { width: min(1050px, calc(100% - 56px)); margin: 0 auto; padding: 68px 0; }
+.dashboard-main h1 { margin: 16px 0 10px; font-family: Fraunces, serif; font-size: clamp(38px, 5vw, 58px); letter-spacing: -2px; }
+.dashboard-intro { max-width: 560px; margin: 0; color: var(--muted); font-size: 17px; line-height: 1.6; }
+.dashboard-message { min-height: 22px; margin: 14px 0 0; color: #ffb2a8; font-size: 14px; }
+.metric-grid { margin: 38px 0 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.metric { padding: 23px; background: var(--surface-raised); border: 1px solid var(--line); border-radius: 16px; }
+.metric span { color: var(--muted); font-size: 13px; font-weight: 700; }
+.metric strong { display: block; margin-top: 8px; color: var(--ink); font-family: Fraunces, serif; font-size: 35px; }
+.dashboard-section { padding: clamp(22px, 4vw, 34px); background: var(--surface-raised); border: 1px solid var(--line); border-radius: 20px; }
+.section-title { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.section-title h2 { margin: 0 0 5px; font-family: Fraunces, serif; font-size: 27px; }
+.section-title p { margin: 0; color: var(--muted); font-size: 14px; }
+.activity-list { margin-top: 25px; display: grid; gap: 10px; }
+.activity-row { padding: 17px; display: flex; align-items: center; justify-content: space-between; gap: 20px; background: #141a25; border: 1px solid #30394a; border-radius: 11px; }
+.activity-row h3 { margin: 0 0 4px; font-size: 16px; }
+.activity-row p { margin: 0; color: var(--muted); font-size: 13px; }
+.activity-score { color: #8eddbc; font-weight: 700; white-space: nowrap; }
+.empty-state { padding: 22px; color: var(--muted); background: #141a25; border: 1px dashed #39445b; border-radius: 11px; line-height: 1.5; }
+@media (max-width: 620px) { .dashboard-main { width: min(100% - 36px, 1050px); padding: 42px 0; } .metric-grid { grid-template-columns: 1fr; } .section-title, .activity-row { align-items: flex-start; flex-direction: column; } .dashboard-header { padding: 0 20px; } }

@@ -56,7 +56,7 @@ function renderAuthActions(user) {
     authActions.querySelectorAll('[data-open-modal]').forEach((button) => button.addEventListener('click', () => openLogin(button.dataset.openModal)));
     return;
   }
-  authActions.innerHTML = `<span class="signed-in">${user.email}</span><button class="login" id="logout-button" type="button">Log out</button>`;
+  authActions.innerHTML = `<a class="login" href="dashboard.html">Dashboard</a><button class="login" id="logout-button" type="button">Log out</button>`;
   document.getElementById('logout-button').addEventListener('click', () => window.quizitSupabase.auth.signOut());
 }
 
@@ -76,7 +76,7 @@ async function submitAuth() {
   modalSubmit.disabled = false;
   if (result.error) return showMessage(result.error.message, true);
   if (currentMode === 'signup' && !result.data.session) return showMessage('Account created. Check your email to confirm it, then log in.');
-  closeLogin();
+  window.location.assign('dashboard.html');
 }
 
 openButtons.forEach((button) => button.addEventListener('click', () => openLogin(button.dataset.openModal || 'login')));

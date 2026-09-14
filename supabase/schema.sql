@@ -56,6 +56,15 @@ create policy "Anyone can read questions for published quizzes" on public.questi
 );
 create policy "Users can read their attempts" on public.attempts for select using (auth.uid() = user_id);
 create policy "Users can save their attempts" on public.attempts for insert with check (auth.uid() = user_id);
+create policy "Educators can view attempts for their quizzes" on public.attempts for select using (
+  exists (
+    select 1 from public.quizzes
+    join public.profiles on profiles.id = quizzes.created_by
+    where quizzes.id = attempts.quiz_id
+      and quizzes.created_by = auth.uid()
+      and profiles.role = 'educator'
+  )
+);
 
 create function public.handle_new_user()
 returns trigger
