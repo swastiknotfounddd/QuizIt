@@ -1,0 +1,8 @@
+# QuizIt + Supabase
+
+1. Create a Supabase project, then open its SQL Editor and run [`supabase/schema.sql`](supabase/schema.sql).
+2. In Supabase Authentication settings, add your deployed site URL and the local URL you use for development to **Redirect URLs**. Email confirmation is supported; turn it off for a quicker local demo if desired.
+3. Replace both placeholders in `supabase-config.js` with the Project URL and **publishable/anon** key from Supabase's Connect dialog. Never put a `service_role` key in this file.
+4. Serve the folder through a local web server (rather than opening the files directly), for example: `python3 -m http.server 8000`.
+
+The app now supports email/password signup and login, creates a profile with the chosen role, fetches the published `human-body` quiz from the database, and saves completed attempts for signed-in users. Row-level security limits profiles and attempts to their owner. Quiz content is publicly readable only when published.

@@ -1,4 +1,4 @@
-const questions = [
+const defaultQuestions = [
   {
     text: 'Which organ pumps blood around the body?',
     answers: ['The lungs', 'The heart', 'The brain', 'The stomach'],
@@ -25,6 +25,10 @@ const questions = [
     correctAnswer: 0,
   },
 ];
+
+let questions = defaultQuestions;
+let quizId = null;
+let quizDuration = 300;
 
 const questionText = document.getElementById('question-text');
 const answerList = document.getElementById('answer-list');
@@ -121,12 +125,33 @@ function finishQuiz(timedOut = false) {
   resultsSummary.textContent = timedOut
     ? `Time is up. You answered ${correctAnswers} of ${questions.length} questions correctly.`
     : `You answered ${correctAnswers} of ${questions.length} questions correctly.`;
+  saveAttempt(correctAnswers, timedOut);
+}
+
+async function saveAttempt(correctAnswers, timedOut) {
+  const user = await window.getQuizitUser();
+  if (!user || !quizId) return;
+
+  const { error } = await window.quizitSupabase.from('attempts').insert({
+    user_id: user.id,
+    quiz_id: quizId,
+    answers,
+    score: correctAnswers,
+    total_questions: questions.length,
+    timed_out: timedOut,
+  });
+
+  if (error) {
+    resultsSummary.textContent += ' Your result could not be saved.';
+  } else {
+    resultsSummary.textContent += ' Your result has been saved.';
+  }
 }
 
 function startQuiz() {
   questionIndex = 0;
   answers = [];
-  secondsLeft = 300;
+  secondsLeft = quizDuration;
   results.hidden = true;
   questionPanel.hidden = false;
   document.querySelector('.quiz-meta').hidden = false;
@@ -156,4 +181,33 @@ previousButton.addEventListener('click', () => {
   renderQuestion();
 });
 retryButton.addEventListener('click', startQuiz);
-startQuiz();
+
+async function loadQuiz() {
+  if (!window.quizitSupabase) return startQuiz();
+  const { data: quiz, error: quizError } = await window.quizitSupabase
+    .from('quizzes')
+    .select('id, title, duration_seconds')
+    .eq('slug', 'human-body')
+    .single();
+
+  if (quizError || !quiz) return startQuiz();
+  const { data: remoteQuestions, error: questionError } = await window.quizitSupabase
+    .from('questions')
+    .select('text, answers, correct_answer')
+    .eq('quiz_id', quiz.id)
+    .order('position');
+
+  if (!questionError && remoteQuestions?.length) {
+    questions = remoteQuestions.map((question) => ({
+      text: question.text,
+      answers: question.answers,
+      correctAnswer: question.correct_answer,
+    }));
+    quizId = quiz.id;
+    quizDuration = quiz.duration_seconds;
+    document.getElementById('quiz-title').textContent = quiz.title;
+  }
+  startQuiz();
+}
+
+loadQuiz();

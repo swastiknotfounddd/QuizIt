@@ -124,6 +124,14 @@ button {
   background: none;
   font-weight: 600;
 }
+.signed-in {
+  max-width: 180px;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .primary {
   padding: 12px 19px;
   color: #fff;
@@ -137,6 +145,14 @@ button {
   background: #5f82f5;
   transform: translateY(-2px);
 }
+.form-message {
+  min-height: 20px;
+  margin: 12px 0 0;
+  color: #8eddbc;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.form-message.error { color: #ffaaa0; }
 
 .hero {
   min-height: 536px;
