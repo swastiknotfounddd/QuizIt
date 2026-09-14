@@ -14,3 +14,7 @@ The app now supports email/password signup and login, creates a profile with the
 ## Teacher quiz builder
 
 Educators can use **Create a quiz** on their dashboard to add a title, category, timer, and one or more four-option questions. Published quizzes can be opened from the educator dashboard and shared using their `quiz.html?quiz=...` URL. If the original schema is already installed, run `supabase/003_quiz_builder.sql` in the SQL Editor before using this feature; it grants educators access only to create and manage their own quizzes and questions.
+
+## Existing accounts
+
+If an account was created before the database trigger in `schema.sql` was installed, run `supabase/004_backfill_profiles.sql` once in Supabase SQL Editor. It creates the missing profile rows and keeps any existing profile unchanged.

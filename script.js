@@ -81,9 +81,13 @@ async function submitAuth() {
       .select('role')
       .eq('id', result.data.user.id)
       .single();
-    if (profileError || profile.role !== selectedRole) {
+    if (profileError || !profile) {
       await window.quizitSupabase.auth.signOut();
-      return showMessage(`This account is registered as a ${profile?.role || 'different'} account. Select the matching role to log in.`, true);
+      return showMessage('Your account profile is missing. Run supabase/004_backfill_profiles.sql in Supabase SQL Editor, then try again.', true);
+    }
+    if (profile.role !== selectedRole) {
+      await window.quizitSupabase.auth.signOut();
+      return showMessage(`This account is registered as a ${profile.role} account. Select the matching role to log in.`, true);
     }
   }
   if (currentMode === 'signup' && !result.data.session) return showMessage('Account created. Check your email to confirm it, then log in.');
