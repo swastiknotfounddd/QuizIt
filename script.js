@@ -75,6 +75,17 @@ async function submitAuth() {
     : await window.quizitSupabase.auth.signUp({ email, password, options: { data: { role: selectedRole } } });
   modalSubmit.disabled = false;
   if (result.error) return showMessage(result.error.message, true);
+  if (currentMode === 'login') {
+    const { data: profile, error: profileError } = await window.quizitSupabase
+      .from('profiles')
+      .select('role')
+      .eq('id', result.data.user.id)
+      .single();
+    if (profileError || profile.role !== selectedRole) {
+      await window.quizitSupabase.auth.signOut();
+      return showMessage(`This account is registered as a ${profile?.role || 'different'} account. Select the matching role to log in.`, true);
+    }
+  }
   if (currentMode === 'signup' && !result.data.session) return showMessage('Account created. Check your email to confirm it, then log in.');
   window.location.assign('dashboard.html');
 }
