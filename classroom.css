@@ -1,0 +1,84 @@
+.classroom-page .back-link {
+  display: inline-block;
+  margin-top: 18px;
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.class-code-card {
+  width: fit-content;
+  margin-top: 22px;
+  padding: 14px 18px;
+  display: grid;
+  gap: 5px;
+  background: #141a25;
+  border: 1px solid #30394a;
+  border-radius: 12px;
+}
+
+.class-code-card span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.class-code-card strong {
+  color: #8eddbc;
+  font-size: 22px;
+  letter-spacing: 2px;
+}
+
+.classroom-page .classroom-panel {
+  margin-top: 20px;
+}
+
+.classroom-page .classroom-quiz-report > h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+}
+
+.student-active-quiz {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.student-active-quiz h3,
+.student-active-quiz p {
+  margin: 0;
+}
+
+.student-active-quiz p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.student-active-quiz .primary {
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.quiz-deadline-text {
+  margin: 0;
+  color: var(--muted);
+}
+
+.roster-row h3 {
+  margin: 0;
+}
+
+.classroom-quiz-builder .deadline-label {
+  max-width: 420px;
+}
+
+@media (max-width: 620px) {
+  .classroom-page .section-title {
+    align-items: flex-start;
+  }
+
+  .student-active-quiz {
+    grid-template-columns: 1fr;
+  }
+}

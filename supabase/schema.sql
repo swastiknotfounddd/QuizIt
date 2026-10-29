@@ -107,21 +107,3 @@ $$;
 
 create trigger on_auth_user_created
   after insert on auth.users for each row execute procedure public.handle_new_user();
-
--- Initial public quiz used by quiz.html.
-insert into public.quizzes (slug, title, category, is_published)
-values ('human-body', 'The human body', 'Science', true)
-on conflict (slug) do nothing;
-
-insert into public.questions (quiz_id, position, text, answers, correct_answer)
-select q.id, v.position, v.text, v.answers::jsonb, v.correct_answer
-from public.quizzes q
-cross join (values
-  (1, 'Which organ pumps blood around the body?', '["The lungs", "The heart", "The brain", "The stomach"]', 1),
-  (2, 'What is the largest organ in the human body?', '["The skin", "The liver", "The lungs", "The heart"]', 0),
-  (3, 'How many bones does a typical adult human have?', '["106", "206", "306", "406"]', 1),
-  (4, 'Which body system carries oxygen and nutrients around the body?', '["Digestive system", "Nervous system", "Circulatory system", "Skeletal system"]', 2),
-  (5, 'Which part of the body is responsible for thinking and memory?', '["The brain", "The kidneys", "The muscles", "The pancreas"]', 0)
-) as v(position, text, answers, correct_answer)
-where q.slug = 'human-body'
-  and not exists (select 1 from public.questions existing where existing.quiz_id = q.id);

@@ -1,34 +1,7 @@
-const defaultQuestions = [
-  {
-    text: 'Which organ pumps blood around the body?',
-    answers: ['The lungs', 'The heart', 'The brain', 'The stomach'],
-    correctAnswer: 1,
-  },
-  {
-    text: 'What is the largest organ in the human body?',
-    answers: ['The skin', 'The liver', 'The lungs', 'The heart'],
-    correctAnswer: 0,
-  },
-  {
-    text: 'How many bones does a typical adult human have?',
-    answers: ['106', '206', '306', '406'],
-    correctAnswer: 1,
-  },
-  {
-    text: 'Which body system carries oxygen and nutrients around the body?',
-    answers: ['Digestive system', 'Nervous system', 'Circulatory system', 'Skeletal system'],
-    correctAnswer: 2,
-  },
-  {
-    text: 'Which part of the body is responsible for thinking and memory?',
-    answers: ['The brain', 'The kidneys', 'The muscles', 'The pancreas'],
-    correctAnswer: 0,
-  },
-];
-
-let questions = defaultQuestions;
+let questions = [];
 let quizId = null;
 let quizDuration = 300;
+let quizDeadline = null;
 
 const questionText = document.getElementById('question-text');
 const answerList = document.getElementById('answer-list');
@@ -44,11 +17,13 @@ const resultsSummary = document.getElementById('results-summary');
 const retryButton = document.getElementById('retry-button');
 const timerElement = document.getElementById('timer');
 const timerBox = document.querySelector('.timer');
+const quizMessage = document.getElementById('quiz-message');
 
 let questionIndex = 0;
 let answers = [];
 let secondsLeft = 300;
 let timerId;
+let quizFinished = false;
 
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
@@ -93,7 +68,13 @@ function renderQuestion() {
     button.type = 'button';
     button.setAttribute('role', 'radio');
     button.setAttribute('aria-checked', String(isSelected));
-    button.innerHTML = `<span class="answer-mark" aria-hidden="true">✓</span><span>${answer}</span>`;
+    const mark = document.createElement('span');
+    const answerText = document.createElement('span');
+    mark.className = 'answer-mark';
+    mark.setAttribute('aria-hidden', 'true');
+    mark.textContent = '✓';
+    answerText.textContent = answer;
+    button.append(mark, answerText);
     button.addEventListener('click', () => selectAnswer(answerIndex));
 
     return button;
@@ -107,51 +88,60 @@ function selectAnswer(answerIndex) {
   renderQuestion();
 }
 
-function getScore() {
-  return answers.reduce((total, answer, index) => {
-    return total + (answer === questions[index].correctAnswer ? 1 : 0);
-  }, 0);
-}
-
-function finishQuiz(timedOut = false) {
+async function finishQuiz(timedOut = false) {
+  if (quizFinished) return;
+  quizFinished = true;
   clearInterval(timerId);
-  const correctAnswers = getScore();
 
   questionPanel.hidden = true;
   document.querySelector('.quiz-meta').hidden = true;
   document.querySelector('.quiz-shell .progress').hidden = true;
   results.hidden = false;
-  score.textContent = `${correctAnswers} / ${questions.length}`;
+  score.textContent = '…';
+  resultsSummary.textContent = timedOut ? 'Time is up. Saving your result…' : 'Saving your result…';
+  const result = await saveAttempt(timedOut);
+  if (!result || result.error) {
+    score.textContent = '—';
+    resultsSummary.textContent += result?.error
+      ? ` Your result could not be saved: ${result.error}`
+      : ' Your result could not be saved.';
+    return;
+  }
+  score.textContent = `${result.score} / ${result.total_questions}`;
   resultsSummary.textContent = timedOut
-    ? `Time is up. You answered ${correctAnswers} of ${questions.length} questions correctly.`
-    : `You answered ${correctAnswers} of ${questions.length} questions correctly.`;
-  saveAttempt(correctAnswers, timedOut);
+    ? `Time is up. You answered ${result.score} of ${result.total_questions} questions correctly. Your result has been saved.`
+    : `You answered ${result.score} of ${result.total_questions} questions correctly. Your result has been saved.`;
 }
 
-async function saveAttempt(correctAnswers, timedOut) {
-  const user = await window.getQuizitUser();
-  if (!user || !quizId) return;
-
-  const { error } = await window.quizitSupabase.from('attempts').insert({
-    user_id: user.id,
-    quiz_id: quizId,
-    answers,
-    score: correctAnswers,
-    total_questions: questions.length,
-    timed_out: timedOut,
-  });
-
-  if (error) {
-    resultsSummary.textContent += ' Your result could not be saved.';
-  } else {
-    resultsSummary.textContent += ' Your result has been saved.';
+async function saveAttempt(timedOut) {
+  if (!quizId) return null;
+  try {
+    const submittedAnswers = questions.map((_question, index) => answers[index] ?? null);
+    const { data, error } = await window.quizitSupabase.rpc('submit_quiz_attempt', {
+      input_quiz_id: quizId,
+      input_answers: submittedAnswers,
+      input_timed_out: timedOut,
+    });
+    return error ? { error: error.message } : data;
+  } catch (error) {
+    return { error: error.message };
   }
 }
 
 function startQuiz() {
+  if (quizDeadline) {
+    const secondsUntilDeadline = Math.floor((quizDeadline - Date.now()) / 1000) - 3;
+    if (secondsUntilDeadline < 1) {
+      showQuizUnavailable('The deadline for this quiz has passed.');
+      return;
+    }
+    secondsLeft = Math.min(quizDuration, secondsUntilDeadline);
+  } else {
+    secondsLeft = quizDuration;
+  }
+  quizFinished = false;
   questionIndex = 0;
   answers = [];
-  secondsLeft = quizDuration;
   results.hidden = true;
   questionPanel.hidden = false;
   document.querySelector('.quiz-meta').hidden = false;
@@ -160,6 +150,21 @@ function startQuiz() {
   updateTimer();
   timerId = setInterval(updateTimer, 1000);
   renderQuestion();
+}
+
+function showQuizUnavailable(text) {
+  clearInterval(timerId);
+  document.querySelector('.quiz-meta').hidden = true;
+  document.querySelector('.quiz-shell .progress').hidden = true;
+  timerBox.hidden = true;
+  results.hidden = true;
+  questionPanel.hidden = false;
+  questionText.textContent = '';
+  answerList.replaceChildren();
+  feedback.textContent = '';
+  quizMessage.textContent = text;
+  previousButton.hidden = true;
+  nextButton.hidden = true;
 }
 
 nextButton.addEventListener('click', () => {
@@ -183,32 +188,60 @@ previousButton.addEventListener('click', () => {
 retryButton.addEventListener('click', startQuiz);
 
 async function loadQuiz() {
-  if (!window.quizitSupabase) return startQuiz();
-  const slug = new URLSearchParams(window.location.search).get('quiz') || 'human-body';
+  if (!window.quizitSupabase) return showQuizUnavailable('Connect to your classroom to choose an assigned quiz.');
+  const user = await window.getQuizitUser();
+  if (!user) { window.location.replace('index.html'); return; }
+  const slug = new URLSearchParams(window.location.search).get('quiz');
+  if (!slug) return showQuizUnavailable('Choose a quiz from your student dashboard to get started.');
   const { data: quiz, error: quizError } = await window.quizitSupabase
     .from('quizzes')
-    .select('id, title, category, duration_seconds')
+    .select('id, title, category, duration_seconds, created_by, is_published')
     .eq('slug', slug)
     .single();
 
-  if (quizError || !quiz) return startQuiz();
+  if (quizError || !quiz) return showQuizUnavailable('This quiz is unavailable or its deadline has passed. Ask your teacher if you need access.');
+  const { data: profile, error: profileError } = await window.quizitSupabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+  if (profileError || !profile) return showQuizUnavailable('Your account could not be verified. Return to your dashboard and try again.');
+
+  const { data: assignments, error: assignmentError } = await window.quizitSupabase
+    .from('quiz_classrooms')
+    .select('deadline')
+    .eq('quiz_id', quiz.id);
+  if (assignmentError) return showQuizUnavailable('This quiz availability could not be checked. Return to your dashboard and try again.');
+  const teacherPreview = profile.role === 'educator' && quiz.created_by === user.id;
+  const activeAssignments = (assignments || []).filter(
+    (assignment) => !assignment.deadline || new Date(assignment.deadline).getTime() > Date.now(),
+  );
+  if (!teacherPreview && !activeAssignments.length) {
+    return showQuizUnavailable('The deadline for this quiz has passed.');
+  }
+  const hasUnlimitedAssignment = activeAssignments.some((assignment) => !assignment.deadline);
+  if (!teacherPreview && !hasUnlimitedAssignment) {
+    const latestDeadline = Math.max(...activeAssignments.map((assignment) => new Date(assignment.deadline).getTime()));
+    const secondsUntilDeadline = Math.floor((latestDeadline - Date.now()) / 1000) - 3;
+    if (secondsUntilDeadline < 1) return showQuizUnavailable('The deadline for this quiz has passed.');
+    quizDeadline = latestDeadline;
+  }
   const { data: remoteQuestions, error: questionError } = await window.quizitSupabase
     .from('questions')
-    .select('text, answers, correct_answer')
+    .select('text, answers')
     .eq('quiz_id', quiz.id)
     .order('position');
 
-  if (!questionError && remoteQuestions?.length) {
-    questions = remoteQuestions.map((question) => ({
-      text: question.text,
-      answers: question.answers,
-      correctAnswer: question.correct_answer,
-    }));
-    quizId = quiz.id;
-    quizDuration = quiz.duration_seconds;
-    document.getElementById('quiz-title').textContent = quiz.title;
-    document.querySelector('.quiz-meta .tag').textContent = quiz.category;
-  }
+  if (questionError || !remoteQuestions?.length) return showQuizUnavailable('This quiz has no available questions yet.');
+  questions = remoteQuestions.map((question) => ({
+    text: question.text,
+    answers: question.answers,
+  }));
+  quizId = quiz.id;
+  quizDuration = quiz.duration_seconds;
+  if (teacherPreview || hasUnlimitedAssignment) quizDeadline = null;
+  document.getElementById('quiz-title').textContent = quiz.title;
+  document.querySelector('.quiz-meta .tag').textContent = quiz.category;
   startQuiz();
 }
 

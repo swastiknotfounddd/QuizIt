@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090b10" />
+    <title>Classroom — QuizIt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="dashboard.css" />
+    <link rel="stylesheet" href="classroom.css" />
+  </head>
+  <body class="dashboard-page classroom-page">
+    <a class="skip-link" href="#classroom-main">Skip to classroom</a>
+    <header class="dashboard-header">
+      <a class="brand" href="index.html" aria-label="QuizIt home"><span class="brand-mark">✓</span><span>QuizIt</span></a>
+      <div class="dashboard-nav"><a id="classroom-dashboard-link" href="dashboard.html">Teacher dashboard</a><button class="login" id="logout-button" type="button">Log out</button></div>
+    </header>
+    <main id="classroom-main" class="dashboard-main">
+      <p class="eyebrow"><span class="spark">✦</span>Classroom</p>
+      <a class="back-link" href="dashboard.html">← All classrooms</a>
+      <h1 id="classroom-title">Loading classroom…</h1>
+      <p class="dashboard-intro" id="classroom-description"></p>
+      <div class="class-code-card" id="classroom-code-card" hidden><span>Student join code</span><strong id="classroom-join-code">—</strong></div>
+      <p class="dashboard-message" id="classroom-message" role="status" aria-live="polite"></p>
+      <section class="metric-grid" id="classroom-metrics" aria-label="Classroom summary"></section>
+
+      <section class="classroom-panel" id="student-classroom-panel" aria-labelledby="student-class-quizzes-title" hidden>
+        <div class="section-title"><div><h2 id="student-class-quizzes-title">Active quizzes</h2><p>Choose a quiz to start. You can attempt it until its deadline.</p></div></div>
+        <div id="student-active-quizzes" class="classroom-quiz-list"></div>
+      </section>
+
+      <section class="classroom-panel" id="teacher-roster-panel" aria-labelledby="roster-title" hidden>
+        <div class="section-title"><div><h2 id="roster-title">Students</h2><p id="roster-summary">Students who joined this classroom.</p></div></div>
+        <div id="classroom-roster" class="classroom-list"></div>
+      </section>
+
+      <section class="classroom-panel" id="teacher-quizzes-panel" aria-labelledby="class-quizzes-title" hidden>
+        <div class="section-title"><div><h2 id="class-quizzes-title">Quizzes and progress</h2><p>Review attempts, scores, deadlines, and each student's progress in this classroom.</p></div><button class="primary" id="create-class-quiz" type="button">Create quiz for this class</button></div>
+        <div id="classroom-quizzes" class="classroom-quiz-list"></div>
+      </section>
+
+      <section class="quiz-builder classroom-quiz-builder" id="classroom-quiz-builder" hidden aria-labelledby="class-builder-title">
+        <div class="section-title"><div><h2 id="class-builder-title">Create quiz for this class</h2><p>This quiz will be published only to this classroom.</p></div><button class="login" id="close-class-builder" type="button">Close</button></div>
+        <form id="classroom-quiz-form" class="quiz-form">
+          <div class="builder-details">
+            <label>Quiz title<input id="class-quiz-title" class="input" type="text" maxlength="100" required /></label>
+            <label>Category<input id="class-quiz-category" class="input" type="text" maxlength="50" required /></label>
+            <label>Time limit (minutes)<input id="class-quiz-duration" class="input" type="number" min="1" max="180" value="5" required /></label>
+          </div>
+          <label class="deadline-label">Quiz deadline<input id="class-quiz-deadline" class="input" type="datetime-local" required /></label>
+          <div class="question-builder-head"><h3>Questions</h3><button class="text-link" id="add-class-question" type="button">+ Add question</button></div>
+          <div id="class-builder-questions" class="builder-questions"></div>
+          <p class="dashboard-message" id="class-builder-message" role="status" aria-live="polite"></p>
+          <button class="primary" id="save-class-quiz" type="submit">Publish to this class</button>
+        </form>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="supabase.js"></script>
+    <script src="classroom.js"></script>
+  </body>
+</html>

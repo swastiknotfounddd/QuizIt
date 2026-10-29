@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#090b10" />
-    <title>Science quiz — QuizIt</title>
+    <title>Quiz — QuizIt</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -28,15 +28,16 @@
     <main id="quiz-main" class="quiz-main">
       <section class="quiz-shell" aria-labelledby="quiz-title">
         <div class="quiz-meta">
-          <span class="tag">SCIENCE</span>
-          <span id="question-count">Question 1 of 5</span>
+          <span class="tag">QUIZ</span>
+          <span id="question-count"></span>
         </div>
         <div class="progress" aria-label="Quiz progress">
           <i id="progress-bar"></i>
         </div>
 
         <div id="question-panel">
-          <h1 id="quiz-title">The human body</h1>
+          <h1 id="quiz-title">Choose a quiz</h1>
+          <p class="answer-feedback" id="quiz-message" role="status" aria-live="polite"></p>
           <p class="quiz-question" id="question-text"></p>
           <div
             class="answer-list"

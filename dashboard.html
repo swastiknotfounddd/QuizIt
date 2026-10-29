@@ -15,7 +15,7 @@
     <a class="skip-link" href="#dashboard-main">Skip to dashboard</a>
     <header class="dashboard-header">
       <a class="brand" href="index.html" aria-label="QuizIt home"><span class="brand-mark">✓</span><span>QuizIt</span></a>
-      <div class="dashboard-nav"><a href="quiz.html">Take a quiz</a><button class="login" id="logout-button" type="button">Log out</button></div>
+      <div class="dashboard-nav"><a href="dashboard.html#activity-list">Take a quiz</a><button class="login" id="logout-button" type="button">Log out</button></div>
     </header>
     <main id="dashboard-main" class="dashboard-main">
       <p class="eyebrow"><span class="spark">✦</span><span id="role-label">Your dashboard</span></p>
@@ -27,8 +27,27 @@
         <div class="section-title"><div><h2 id="activity-title">Recent activity</h2><p id="activity-description">Your latest completed quizzes.</p></div><button class="primary" id="dashboard-action" type="button">Take a quiz</button></div>
         <div class="activity-list" id="activity-list"></div>
       </section>
+      <section class="classroom-panel" id="student-classrooms" hidden aria-labelledby="student-classrooms-title">
+        <div class="section-title"><div><h2 id="student-classrooms-title">Your classrooms</h2><p>Join a classroom with the code shared by your teacher.</p></div></div>
+        <form class="classroom-form" id="join-classroom-form">
+          <label>Classroom code<input id="join-classroom-code" class="input" type="text" maxlength="10" pattern="[A-Fa-f0-9]{6,10}" title="Enter the classroom code shared by your teacher." autocomplete="off" placeholder="Enter your class code" required /></label>
+          <button class="primary" type="submit">Join classroom</button>
+        </form>
+        <p class="dashboard-message" id="join-classroom-message" role="status" aria-live="polite"></p>
+        <div class="classroom-list" id="student-classroom-list"></div>
+      </section>
+      <section class="classroom-panel" id="teacher-classrooms" hidden aria-labelledby="teacher-classrooms-title">
+        <div class="section-title"><div><h2 id="teacher-classrooms-title">Your classrooms</h2><p>Create a class, share its code, then open it to manage students, quizzes, deadlines, and progress.</p></div></div>
+        <form class="classroom-form" id="create-classroom-form">
+          <label>Classroom name<input id="new-classroom-name" class="input" type="text" maxlength="100" placeholder="e.g. Grade 10 science" required /></label>
+          <label>Description <span class="optional">(optional)</span><input id="new-classroom-description" class="input" type="text" maxlength="250" placeholder="e.g. Monday morning batch" /></label>
+          <button class="primary" type="submit">Create classroom</button>
+        </form>
+        <p class="dashboard-message" id="create-classroom-message" role="status" aria-live="polite"></p>
+        <div class="classroom-list" id="teacher-classroom-list"></div>
+      </section>
       <section class="quiz-builder" id="quiz-builder" hidden aria-labelledby="builder-title">
-        <div class="section-title"><div><h2 id="builder-title">Create a quiz</h2><p>Add your questions, then save it as a draft or publish it for learners.</p></div><button class="login" id="close-builder" type="button">Close</button></div>
+        <div class="section-title"><div><h2 id="builder-title">Create a quiz for multiple classes</h2><p id="builder-description">Add your questions, then publish the quiz to the classrooms you select.</p></div><button class="login" id="close-builder" type="button">Close</button></div>
         <form id="quiz-form" class="quiz-form">
           <div class="builder-details">
             <label>Quiz title<input id="new-quiz-title" class="input" type="text" maxlength="100" placeholder="e.g. World geography" required /></label>
@@ -37,7 +56,13 @@
           </div>
           <div class="question-builder-head"><h3>Questions</h3><button class="text-link" id="add-question" type="button">+ Add question</button></div>
           <div id="builder-questions" class="builder-questions"></div>
-          <label class="publish-toggle"><input id="new-quiz-published" type="checkbox" checked /> Publish for learners now</label>
+          <label class="publish-toggle"><input id="new-quiz-published" type="checkbox" checked /> Publish to selected classrooms when saved</label>
+          <fieldset class="classroom-picker" id="classroom-picker">
+            <legend>Publish to classrooms</legend>
+            <p>Select at least one classroom when publishing. Drafts are visible only to you.</p>
+            <div id="quiz-classroom-options" class="classroom-options"></div>
+          </fieldset>
+          <label class="deadline-label" id="deadline-field">Quiz deadline <span class="optional">(required when publishing; applies to selected classrooms)</span><input id="new-quiz-deadline" class="input" type="datetime-local" /></label>
           <p class="dashboard-message" id="builder-message" role="status" aria-live="polite"></p>
           <button class="primary" id="save-quiz" type="submit">Save quiz</button>
         </form>
