@@ -18,6 +18,10 @@
   border-radius: 12px;
 }
 
+.class-code-card[hidden] {
+  display: none;
+}
+
 .class-code-card span {
   color: var(--muted);
   font-size: 12px;
